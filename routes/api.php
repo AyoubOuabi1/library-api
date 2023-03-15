@@ -4,6 +4,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,16 +32,22 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('forget-password', 'forgotPassword');
     Route::post('reset-password', 'reset');
 
-    Route::group(['controller' => GenreController::class], function (){
-        Route::get('genres', 'index');
-        Route::post('genres',   'store');
-        Route::get('genres/{id}',  'show');
-        Route::put('genres/{id}', 'update');
-        Route::delete('genres/{id}', 'destroy');
-    });
+
 
 });
 
+Route::group(['controller' => GenreController::class], function (){
+    Route::get('genres', 'index');
+    Route::post('genres',   'store');
+    Route::get('genres/{id}',  'show');
+    Route::put('genres/{id}', 'update');
+    Route::delete('genres/{id}', 'destroy');
+});
+Route::group(['controller' => UserController::class], function (){
+    Route::get('edit-profile', 'index');
+    Route::post('edit-profile',   'editProfile');
+
+});
 
 
 Route::post('sendPasswordResetLink', [ResetPasswordController::class, 'sendEmail']);
