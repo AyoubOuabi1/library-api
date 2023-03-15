@@ -1,7 +1,9 @@
 <?php
 
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,16 +28,31 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+    Route::post('forget-password', 'forgotPassword');
+    Route::post('reset-password', 'reset');
+
+    Route::group(['controller' => GenreController::class], function (){
+        Route::get('genres', 'index');
+        Route::post('genres',   'store');
+        Route::get('genres/{id}',  'show');
+        Route::put('genres/{id}', 'update');
+        Route::delete('genres/{id}', 'destroy');
+    });
 
 });
 
-Route::controller(GenreController::class)->group(function (){
+
+
+Route::post('sendPasswordResetLink', [ResetPasswordController::class, 'sendEmail']);
+
+
+/*Route::controller(GenreController::class)->group(function (){
     Route::get('genres', 'index');
     Route::post('genres',   'store');
     Route::get('genres/{id}',  'show');
     Route::put('genres/{id}', 'update');
     Route::delete('genres/{id}', 'destroy');
-});
+});*/
 /*
 Route::get('/genres', [GenreController::class, 'index']);
 Route::post('/genres-store', [GenreController::class, 'store']);
