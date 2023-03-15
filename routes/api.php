@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\LivreController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -42,6 +43,14 @@ Route::group(['controller' => GenreController::class], function (){
     Route::get('genres/{id}',  'show');
     Route::put('genres/{id}', 'update');
     Route::delete('genres/{id}', 'destroy');
+});
+
+Route::group(['controller' => LivreController::class], function (){
+    Route::get('livres', 'index');
+    Route::post('livres',   'store');
+    Route::get('livres/{id}',  'show');
+    Route::put('livres/{id}', 'update');
+    Route::delete('livres/{id}', 'destroy');
 });
 Route::group(['controller' => UserController::class], function (){
     Route::get('edit-profile', 'index');
