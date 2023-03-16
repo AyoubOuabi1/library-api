@@ -32,14 +32,14 @@ Route::post('reset-password', [AuthController::class, 'reset']);
 // Routes that require authentication
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::get('livres', 'LivreController@index')->name('livres.index');
+    Route::get('livres', [LivreController::class,'index'])->name('livres.index');
 
     // Routes for moderators and super-admins
     Route::middleware(['role:moderator|super-admin'])->group(function () {
-        Route::post('livres', 'LivreController@store')->name('livres.store');
-        Route::get('livres/{id}', 'LivreController@show')->name('livres.show');
-        Route::put('livres/{id}', 'LivreController@update')->name('livres.update');
-        Route::delete('livres/{id}', 'LivreController@destroy')->name('livres.destroy');
+        Route::post('livres', [LivreController::class,'store'])->name('livres.store');
+        Route::get('livres/{id}',[LivreController::class,'show'])->name('livres.show');
+        Route::put('livres/{id}',[LivreController::class,'update'])->name('livres.update');
+        Route::delete('livres/{id}',[LivreController::class,'destroy'])->name('livres.destroy');
     });
 
     // Routes for super-admins only
