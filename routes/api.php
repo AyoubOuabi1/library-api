@@ -20,60 +20,35 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+// Authentication routes
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('logout', [AuthController::class, 'logout']);
+Route::post('refresh', [AuthController::class, 'refresh']);
+Route::post('forget-password', [AuthController::class, 'forgotPassword']);
+Route::post('reset-password', [AuthController::class, 'reset']);
+
+// Routes that require authentication
+Route::group(['middleware' => ['auth']], function () {
+
+    Route::get('livres', 'LivreController@index')->name('livres.index');
+
+    // Routes for moderators and super-admins
+    Route::middleware(['role:moderator|super-admin'])->group(function () {
+        Route::post('livres', 'LivreController@store')->name('livres.store');
+        Route::get('livres/{id}', 'LivreController@show')->name('livres.show');
+        Route::put('livres/{id}', 'LivreController@update')->name('livres.update');
+        Route::delete('livres/{id}', 'LivreController@destroy')->name('livres.destroy');
+    });
+
+    // Routes for super-admins only
+    Route::middleware(['role:super-admin'])->group(function () {
+        Route::get('genres', [GenreController::class,'index'])->name('genres.index');
+        Route::post('genres', [GenreController::class,'store'])->name('genres.store');
+        Route::put('genres/{id}', [GenreController::class,'update'])->name('genres.update');
+        Route::delete('genres/{id}', [GenreController::class,'destroy'])->name('genres.destroy');
+        Route::get('assign-role', [GenreController::class,'index'])->name('assign-role.index');
+        Route::post('assign-role', [GenreController::class,'store'])->name('assign-role.store');
+    });
 });
-
-
-Route::controller(AuthController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('register', 'register');
-    Route::post('logout', 'logout');
-    Route::post('refresh', 'refresh');
-    Route::post('forget-password', 'forgotPassword');
-    Route::post('reset-password', 'reset');
-
-
-
-});
-
-Route::group(['controller' => GenreController::class], function (){
-    Route::get('genres', 'index');
-    Route::post('genres',   'store');
-    Route::get('genres/{id}',  'show');
-    Route::put('genres/{id}', 'update');
-    Route::delete('genres/{id}', 'destroy');
-});
-
-Route::group(['controller' => LivreController::class], function (){
-    Route::get('livres', 'index');
-    Route::post('livres',   'store');
-    Route::get('livres/{id}',  'show');
-    Route::put('livres/{id}', 'update');
-    Route::delete('livres/{id}', 'destroy');
-});
-Route::group(['controller' => UserController::class], function (){
-    Route::get('edit-profile', 'index');
-    Route::post('edit-profile',   'editProfile');
-
-});
-
-
-Route::post('sendPasswordResetLink', [ResetPasswordController::class, 'sendEmail']);
-
-
-/*Route::controller(GenreController::class)->group(function (){
-    Route::get('genres', 'index');
-    Route::post('genres',   'store');
-    Route::get('genres/{id}',  'show');
-    Route::put('genres/{id}', 'update');
-    Route::delete('genres/{id}', 'destroy');
-});*/
-/*
-Route::get('/genres', [GenreController::class, 'index']);
-Route::post('/genres-store', [GenreController::class, 'store']);
-Route::get('/genres/{id}', [GenreController::class, 'show']);
-Route::put('/genres/{id}', [GenreController::class, 'update']);
-Route::delete('/genres/{id}', [GenreController::class, 'destroy']);*/
-
-

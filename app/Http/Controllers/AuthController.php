@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register','forgotPassword','reset']]);
+        $this->middleware('auth:api', ['except' => ['login','register']]);
     }
 
     public function login(Request $request)
@@ -56,7 +56,9 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+
         $token = Auth::login($user);
+        $user::assignRole('simple-user');
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',
@@ -66,6 +68,7 @@ class AuthController extends Controller
                 'type' => 'bearer',
             ]
         ]);
+
     }
 
     public function logout()

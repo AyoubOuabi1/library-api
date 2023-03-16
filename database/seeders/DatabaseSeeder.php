@@ -12,11 +12,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        //$this->call(RolesAndPermissionsSeeder::class);
+         \App\Models\User::factory()->count(1)->create()->each(function($user){
+             $user->assignRole('super-admin');
+         });
+        \App\Models\User::factory()->count(1)->create()->each(function($user){
+            $user->assignRole('moderator');
+        });
+        \App\Models\User::factory()->count(1)->create()->each(function($user){
+            $user->assignRole('simple-user');
+        });
 
         // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
+          //   'name' => 'Test User',
+            // 'email' => 'test@example.com',
         // ]);
     }
 }
