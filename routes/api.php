@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\LivreController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 // Authentication routes
 Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
+Route::post('register', [AuthController::class, 'registerUser']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::post('refresh', [AuthController::class, 'refresh']);
 Route::post('forget-password', [AuthController::class, 'forgotPassword']);
@@ -48,7 +49,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('genres', [GenreController::class,'store'])->name('genres.store');
         Route::put('genres/{id}', [GenreController::class,'update'])->name('genres.update');
         Route::delete('genres/{id}', [GenreController::class,'destroy'])->name('genres.destroy');
-        Route::get('assign-role', [GenreController::class,'index'])->name('assign-role.index');
-        Route::post('assign-role', [GenreController::class,'store'])->name('assign-role.store');
+
+        Route::get('given-moderator-role/{id}', [RoleController::class,'givenModeratorRole'])->name('given-moderator-role.givenModeratorRole');
+        Route::post('given-admin-role/{id}', [RoleController::class,'givenAdminRole'])->name('given-admin-role.givenAdminRole');
+        Route::post('given-user-role/{id}', [RoleController::class,'givenUserRole'])->name('given-user-role.givenUserRole');
     });
 });
