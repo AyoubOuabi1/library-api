@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -24,9 +25,12 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         $token = Auth::attempt($credentials);
+
         if (!$token) {
             return response()->json([
                 'status' => 'error',
+
+
                 'message' => 'Unauthorized',
             ], 401);
         }
@@ -71,6 +75,27 @@ class AuthController extends Controller
         ]);
 
     }
+
+    public function addNewUser(Request $request)
+    {
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        $user->assignRole('simple-user');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User created successfully',
+            'user' => $user,
+            //'role'=>$user->hasAllRoles(Role::all()),
+            'authorisation' => [
+                'type' => 'bearer',
+            ]
+        ]);
+    }
+
 
     public function logout()
     {

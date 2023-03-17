@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 // Authentication routes
 Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'registerUser']);
+Route::post('/register', [AuthController::class, 'addNewUser']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::post('refresh', [AuthController::class, 'refresh']);
 Route::post('forget-password', [AuthController::class, 'forgotPassword']);
