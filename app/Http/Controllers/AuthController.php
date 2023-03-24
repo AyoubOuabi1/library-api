@@ -85,12 +85,13 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
         $user->assignRole('simple-user');
+        $token = Auth::login($user);
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',
             'user' => $user,
-            //'role'=>$user->hasAllRoles(Role::all()),
             'authorisation' => [
+                'token' => $token,
                 'type' => 'bearer',
             ]
         ]);
