@@ -21,12 +21,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/test', [AuthController::class, 'login']);
+
 
 // Authentication routes
+Route::post('/edite-profile', [UserController::class, 'editProfile']);
+
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'addNewUser']);
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('refresh', [AuthController::class, 'refresh']);
 Route::post('forget-password', [AuthController::class, 'forgotPassword']);
@@ -55,5 +56,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('given-moderator-role/{id}', [RoleController::class,'givenModeratorRole'])->name('given-moderator-role.givenModeratorRole');
         Route::post('given-admin-role/{id}', [RoleController::class,'givenAdminRole'])->name('given-admin-role.givenAdminRole');
         Route::post('given-user-role/{id}', [RoleController::class,'givenUserRole'])->name('given-user-role.givenUserRole');
+        Route::post('getPermission', [RoleController::class,'getPermissions'])->name('given-user-role.getPermissions');
     });
 });

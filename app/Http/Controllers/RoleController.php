@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -36,5 +37,11 @@ class RoleController extends Controller
         }
         $user->syncRoles(['simple-user']);
         return response()->json(['message' => 'Role assigned successfully.']);
+    }
+
+    public  function getPermissions(Request $request){
+        $role = Role::findByName($request->name);
+        $permissions = $role->permissions->toArray();
+        return response()->json($permissions);
     }
 }

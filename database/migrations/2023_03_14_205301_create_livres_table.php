@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('released_date');
             $table->integer('page_numbers');
             $table->string('emplacement');
-            $table->string('statut');
+            $table->string('status');
             $table->timestamps();
         });
     }

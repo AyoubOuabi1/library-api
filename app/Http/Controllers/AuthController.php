@@ -47,37 +47,29 @@ class AuthController extends Controller
 
     }
 
-    public function registerUser(Request $request): \Illuminate\Http\JsonResponse
+    public function register(Request $request): \Illuminate\Http\JsonResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
+        /* $request -> validate::make($request->all(), [
+             'name' => 'required|string|max:255',
+             'email' => 'required|string|email|max:255|unique:users',
+             'password' => 'required|string|min:6',
+         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+       /*if (validate->fails()) {
+             return response()->json([
+                 'status' => 'error',
+                 'message' => validate->errors()->first()
+             ], 422);
+         }*/
 
-
-        $token = Auth::login($user);
-        //$user::assignRole('simple-user');
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully',
-            'user' => $user,
-            'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ]);
-
-    }
-
-    public function addNewUser(Request $request)
-    {
+        // Check if email already exists in the database
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Email already exists'
+            ], 409);
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -95,6 +87,7 @@ class AuthController extends Controller
                 'type' => 'bearer',
             ]
         ]);
+
     }
 
 

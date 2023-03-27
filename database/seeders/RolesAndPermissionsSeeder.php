@@ -32,7 +32,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::created(['name'=> 'edite role']);
         Permission::created(['name'=> 'delete role']);
 
-
+        Permission::created(['name'=> 'get role']);
         // create roles and assign created permissions
 
         // this can be done as separate statements
