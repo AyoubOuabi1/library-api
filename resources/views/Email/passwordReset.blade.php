@@ -1,12 +1,4 @@
-<x-mail::message>
-# Introduction
+<h1>Forget Password Email</h1>
 
-The body of your message.
-
-<x-mail::button :url="''">
-Button Text
-</x-mail::button>
-
-Thanks,<br>
-{{ config('app.name') }}
-</x-mail::message>
+You can reset password from bellow link:<br>
+<a href="{{ route('reset.password.post', $token) }}">Reset Password</a>
